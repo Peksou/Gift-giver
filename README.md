@@ -112,22 +112,61 @@ npm run web
 
 ```
 gift-giver-fixed/
-├── App.tsx                 # Composant principal
-├── index.ts               # Point d'entrée
-├── package.json           # Dépendances et scripts
-├── app.json              # Configuration Expo
-├── tsconfig.json         # Configuration TypeScript
-└── assets/
-    ├── avatars/          # 12 avatars pour les participants
-    │   ├── avatar01.png
-    │   └── ...
-    ├── sounds/           # Effets sonores
-    │   ├── drumroll.mp3  # Roulement de tambour
-    │   ├── tada.mp3      # Son de victoire
-    │   └── Jingle_Bells.mp3  # Musique de fond
-    ├── icon.png          # Icône de l'app
-    ├── splash-icon.png   # Écran de démarrage
-    └── favicon.png       # Favicon web
+├── App.tsx                    # Point d'entrée principal (legacy)
+├── App.tsx.old                # Ancienne version monolithique (643 lignes)
+├── index.ts                   # Configuration Expo et enregistrement
+├── package.json               # Dépendances et scripts npm
+├── package-lock.json          # Verrouillage des versions de dépendances
+├── app.json                   # Configuration Expo (nom, icônes, etc.)
+├── tsconfig.json              # Configuration TypeScript
+├── .gitignore                 # Fichiers ignorés par Git
+├── README.md                  # Documentation du projet
+├── src/                       # Code source modulaire
+│   ├── App.tsx                # Composant principal refactorisé (135 lignes)
+│   ├── index.ts               # Barrel export principal
+│   ├── components/            # Composants UI réutilisables
+│   │   ├── index.ts           # Barrel export des composants
+│   │   ├── ui/                # Composants d'interface utilisateur
+│   │   │   ├── index.ts       # Barrel export UI
+│   │   │   ├── Avatar.tsx     # Sélecteur d'avatar avec grille
+│   │   │   ├── AssignmentCard.tsx  # Carte d'affichage des résultats
+│   │   │   ├── EditModal.tsx  # Modal d'édition des participants
+│   │   │   ├── ParticipantCard.tsx # Carte de participant
+│   │   │   ├── ShareCapture.tsx    # Modal de capture/partage optimisée
+│   │   │   └── Snowfall.tsx   # Animation de flocons de neige
+│   │   └── screens/           # Écrans principaux
+│   │       ├── index.ts       # Barrel export des écrans
+│   │       ├── HomeScreen.tsx # Écran d'accueil (ajout participants)
+│   │       └── ResultsScreen.tsx   # Écran des résultats avec animations
+│   ├── hooks/                 # Hooks personnalisés
+│   │   ├── index.ts           # Barrel export des hooks
+│   │   ├── useAudio.ts        # Gestion audio avec auto-restart
+│   │   ├── useAnimations.ts   # Logique d'animations et transitions
+│   │   ├── useDrawLogic.ts    # Logique de tirage au sort
+│   │   └── useStorage.ts      # Persistance avec AsyncStorage
+│   ├── utils/                 # Utilitaires et algorithmes
+│   │   └── index.ts           # Algorithme de dérangement et helpers
+│   ├── types/                 # Interfaces TypeScript
+│   │   └── index.ts           # Types globaux (Participant, Assignment, etc.)
+│   ├── constants/             # Configuration centralisée
+│   │   └── index.ts           # Constantes (sons, couleurs, avatars, etc.)
+│   └── styles/                # Styles partagés
+│       └── index.ts           # Styles globaux et thème
+└── assets/                    # Ressources statiques
+    ├── icon.png               # Icône principale de l'app (1024x1024)
+    ├── adaptive-icon.png      # Icône adaptative Android
+    ├── splash-icon.png        # Icône d'écran de démarrage
+    ├── favicon.png            # Favicon pour la version web
+    ├── avatars/               # Collection d'avatars (14 au total)
+    │   ├── avatar01.png       # Avatar animaux/personnages
+    │   ├── avatar02.png       # Avatar diversifiés
+    │   ├── avatar03.png       # Pour sélection utilisateur
+    │   ├── ...                # (avatar04 à avatar14)
+    │   └── avatar14.png       # Dernier avatar de la collection
+    └── sounds/                # Effets sonores
+        ├── drumroll.mp3       # Roulement de tambour (suspense)
+        ├── tada.mp3           # Son de victoire (révélation)
+        └── Jingle_Bells.mp3   # Musique de fond festive (loop)
 ```
 
 ## 🎨 Caractéristiques Techniques
@@ -150,8 +189,10 @@ L'application utilise un **algorithme de dérangement** qui garantit mathématiq
 ## 🔧 Développement
 
 ### Architecture
-- **Composants fonctionnels** avec hooks React
-- **TypeScript** pour la sécurité des types
+- **Structure modulaire** avec séparation des responsabilités
+- **Hooks personnalisés** pour la logique métier (audio, animations)
+- **Composants réutilisables** pour l'interface utilisateur
+- **TypeScript** pour la sécurité des types et l'IntelliSense
 - **State management** avec useState et useRef
 - **Effets de bord** gérés avec useEffect
 
