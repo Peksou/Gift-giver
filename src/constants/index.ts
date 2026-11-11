@@ -3,18 +3,27 @@ import { Dimensions } from 'react-native';
 export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export const AVATAR_LIST = [
-  require('../../assets/avatars/avatar01.png'),
-  require('../../assets/avatars/avatar02.png'),
-  require('../../assets/avatars/avatar03.png'),
-  require('../../assets/avatars/avatar04.png'),
-  require('../../assets/avatars/avatar05.png'),
-  require('../../assets/avatars/avatar06.png'),
-  require('../../assets/avatars/avatar07.png'),
-  require('../../assets/avatars/avatar08.png'),
-  require('../../assets/avatars/avatar09.png'),
-  require('../../assets/avatars/avatar10.png'),
-  require('../../assets/avatars/avatar11.png'),
-  require('../../assets/avatars/avatar12.png'),
+  require('../../assets/avatars/avatar14.png'), /*bonhomme de neige*/
+  require('../../assets/avatars/avatar22.png'), /*renne noël*/
+  require('../../assets/avatars/avatar23.png'), /*petit renne noël*/
+  require('../../assets/avatars/avatar01.png'), /*homme blanc chauve*/
+  require('../../assets/avatars/avatar15.png'), /*homme noir*/
+  require('../../assets/avatars/avatar16.png'), /*femme noire*/
+  require('../../assets/avatars/avatar21.png'), /*femme blanche*/
+  require('../../assets/avatars/avatar02.png'), /*fille blanche*/
+  require('../../assets/avatars/avatar03.png'), /*garçon blanc*/
+  require('../../assets/avatars/avatar08.png'), /*femme indienne*/
+  require('../../assets/avatars/avatar17.png'), /*enfant indien*/
+  require('../../assets/avatars/avatar19.png'), /*fille noire*/
+  require('../../assets/avatars/avatar20.png'), /*garçon noir*/
+  require('../../assets/avatars/avatar09.png'), /*homme blanc énervé*/
+  require('../../assets/avatars/avatar10.png'), /*femme blanche blonde*/
+  require('../../assets/avatars/avatar06.png'), /*mère noël*/
+  require('../../assets/avatars/avatar13.png'), /*père noël*/
+  // require('../../assets/avatars/avatar04.png'), /*fille blanche*/
+  // require('../../assets/avatars/avatar05.png'), /*garçon blanc*/
+  // require('../../assets/avatars/avatar07.png'), /*homme blanc barbue*/
+  // require('../../assets/avatars/avatar18.png'), /*fille noire*/
 ];
 
 export const SOUNDS = {
@@ -24,7 +33,7 @@ export const SOUNDS = {
 };
 
 export const COLORS = {
-  GRADIENT: ['#B30000', '#FFD700'] as const,
+  GRADIENT: ['#B30000', '#ffd900ff'] as const,
   PRIMARY: '#4CAF50',
   SECONDARY: '#2196F3',
   DISABLED: '#aaa',

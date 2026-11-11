@@ -4,8 +4,8 @@ Une application mobile festive pour organiser des tirages au sort de cadeaux de 
 
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android%20%7C%20Web-blue.svg)
-![React Native](https://img.shields.io/badge/React%20Native-0.81.5-blue.svg)
-![Expo](https://img.shields.io/badge/Expo-54.0.20-black.svg)
+![React Native](https://img.shields.io/badge/React%20Native-0.86.3-blue.svg)
+![Expo](https://img.shields.io/badge/Expo-57.0.32-black.svg)
 
 ## ✨ Fonctionnalités
 
@@ -18,6 +18,7 @@ Une application mobile festive pour organiser des tirages au sort de cadeaux de 
 ### 👥 Gestion des Participants
 - **Ajout facile** de participants avec noms personnalisés
 - **12 avatars uniques** au choix pour chaque participant
+- **📷 Photo personnalisée** : prenez une photo ou choisissez depuis la galerie
 - **Édition/suppression** des participants en temps réel
 - **Sauvegarde automatique** des données localement
 
@@ -28,16 +29,15 @@ Une application mobile festive pour organiser des tirages au sort de cadeaux de 
 - **Design responsive** pour tous les écrans
 
 ### 📱 Fonctionnalités Avancées
-- **Code de session unique** pour chaque tirage
 - **Capture d'écran** et partage des résultats
 - **Configuration du budget** pour les cadeaux
 - **Sauvegarde persistante** des paramètres
+- **Gestion audio intelligente** : arrêt automatique des sons lors des changements d'écran
 
 ## 🚀 Installation et Lancement
 
 ### Prérequis
-- Node.js (version 18 ou supérieure)
-- Expo CLI : `npm install -g @expo/cli`
+- Node.js 22.13 ou supérieur (ou 20.19.4+ / 24.3+)
 - Pour le développement mobile : Expo Go sur votre téléphone
 
 ### Installation
@@ -49,9 +49,11 @@ cd gift-giver-fixed
 # Installer les dépendances
 npm install
 
-# Lancer l'application
-npm start
+# Lancer explicitement dans Expo Go
+npm run dev
 ```
+
+Scannez le QR code avec Expo Go (Android) ou l'appareil photo (iOS). Le téléphone et l'ordinateur doivent être sur le même réseau.
 
 ### Lancement sur différentes plateformes
 ```bash
@@ -69,7 +71,7 @@ npm run web
 
 ### 1. **Ajouter des Participants**
 - Saisissez le nom du participant
-- Choisissez un avatar parmi les 12 disponibles
+- Choisissez un avatar parmi les 12 disponibles **OU** ajoutez votre photo (📷 caméra ou galerie)
 - Cliquez sur "Ajouter" pour confirmer
 
 ### 2. **Configurer le Tirage**
@@ -101,9 +103,13 @@ npm run web
 - **React Native View Shot** - Capture d'écran
 
 ### Audio/Animations
-- **Expo Audio/AV** - Gestion audio avancée
+- **Expo Audio** - Gestion audio avancée (migration depuis expo-av)
 - **Animated API** - Animations natives fluides
 - **Expo Sharing** - Partage de contenu
+
+### Médias
+- **Expo Image Picker** - Accès caméra et galerie photo
+- **Expo File System** - Gestion des fichiers locaux
 
 ### Stockage
 - **AsyncStorage** - Persistance des données locales
@@ -132,6 +138,7 @@ gift-giver-fixed/
 │   │   │   ├── AssignmentCard.tsx  # Carte d'affichage des résultats
 │   │   │   ├── EditModal.tsx  # Modal d'édition des participants
 │   │   │   ├── ParticipantCard.tsx # Carte de participant
+│   │   │   ├── PhotoPicker.tsx     # Sélecteur photo (caméra/galerie)
 │   │   │   ├── ShareCapture.tsx    # Modal de capture/partage optimisée
 │   │   │   └── Snowfall.tsx   # Animation de flocons de neige
 │   │   └── screens/           # Écrans principaux

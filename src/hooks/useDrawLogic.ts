@@ -1,24 +1,35 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Vibration } from 'react-native';
 import { Participant, Assignment } from '../types';
-import { generateDerangement, generateSessionCode } from '../utils';
+import { generateDerangement } from '../utils';
 import { ANIMATION_DURATIONS } from '../constants';
 
 export function useDrawLogic(
   participants: Participant[],
   playDrumroll: () => void,
+  stopDrumroll: () => void,
   playTada: () => void,
+  stopTada: () => void,
   startSpin: () => void,
   stopSpin: () => void,
   animateResultsReveal: (count: number, onComplete?: () => void) => void
 ) {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
-  const [sessionCode, setSessionCode] = useState('');
   const [isDrawing, setIsDrawing] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  
+  // Flag pour annuler les callbacks si on quitte
+  const isSessionActiveRef = useRef(true);
 
   const runDraw = async () => {
     if (participants.length < 3) return;
+
+    // Arrêter les sons en cours avant de relancer
+    stopDrumroll();
+    stopTada();
+    
+    // Marquer la session comme active
+    isSessionActiveRef.current = true;
 
     // Réinitialisation
     setIsDrawing(true);
@@ -31,6 +42,9 @@ export function useDrawLogic(
 
     // Délai pour l'animation
     setTimeout(async () => {
+      // Vérifier si la session est toujours active
+      if (!isSessionActiveRef.current) return;
+      
       const shuffled = generateDerangement(participants);
       const newAssignments = participants.map((giver, i) => ({
         giver,
@@ -41,6 +55,9 @@ export function useDrawLogic(
 
       // Animation des résultats
       animateResultsReveal(newAssignments.length, async () => {
+        // Vérifier si la session est toujours active avant de jouer tada
+        if (!isSessionActiveRef.current) return;
+        
         stopSpin();
         setIsDrawing(false);
         await playTada();
@@ -50,32 +67,24 @@ export function useDrawLogic(
     }, ANIMATION_DURATIONS.DRAW_DELAY);
   };
 
-  const createSession = () => {
-    if (participants.length < 3) return false;
-    
-    const code = generateSessionCode();
-    setSessionCode(code);
-    setAssignments([]);
-    setShowConfetti(false);
-    setIsDrawing(false);
-    
-    return true;
-  };
 
   const resetSession = () => {
+    // Annuler les callbacks en cours
+    isSessionActiveRef.current = false;
+    
+    stopDrumroll(); // Arrêter le son drumroll si en cours
+    stopTada(); // Arrêter le son tada si en cours
+    stopSpin(); // Arrêter l'animation du dé
     setAssignments([]);
-    setSessionCode('');
     setShowConfetti(false);
     setIsDrawing(false);
   };
 
   return {
     assignments,
-    sessionCode,
     isDrawing,
     showConfetti,
     runDraw,
-    createSession,
     resetSession,
   };
 }

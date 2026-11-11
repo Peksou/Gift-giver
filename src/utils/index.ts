@@ -25,12 +25,6 @@ export function generateDerangement<T>(array: T[]): T[] {
   return result;
 }
 
-/**
- * Génère un code de session unique
- */
-export function generateSessionCode(): string {
-  return 'GG' + Math.random().toString(36).substr(2, 6).toUpperCase();
-}
 
 /**
  * Valide le nom d'un participant

@@ -9,11 +9,12 @@ export default function App() {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [newParticipantName, setNewParticipantName] = useState('');
   const [selectedAvatarIndex, setSelectedAvatarIndex] = useState<number | null>(null);
+  const [customPhotoUri, setCustomPhotoUri] = useState<string | null>(null);
   const [budget, setBudget] = useState('25');
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('home');
 
   // Hooks personnalisés
-  const { playDrumroll, playTada, toggleBackgroundMusic } = useAudio();
+  const { playDrumroll, stopDrumroll, playTada, stopTada, toggleBackgroundMusic } = useAudio();
   const { 
     bounceAnim, 
     rowOpacities, 
@@ -28,16 +29,16 @@ export default function App() {
   
   const {
     assignments,
-    sessionCode,
     isDrawing,
     showConfetti,
     runDraw,
-    createSession,
     resetSession,
   } = useDrawLogic(
     participants,
     playDrumroll,
+    stopDrumroll,
     playTada,
+    stopTada,
     startSpin,
     stopSpin,
     animateResultsReveal
@@ -46,27 +47,38 @@ export default function App() {
   // Gestionnaires d'événements
   const handleAvatarSelect = (index: number) => {
     setSelectedAvatarIndex(index);
+    setCustomPhotoUri(null); // Désélectionner photo si avatar choisi
     animateBounce();
   };
 
   const handleAddParticipant = () => {
     const name = newParticipantName.trim();
-    if (!name || selectedAvatarIndex === null) return;
+    if (!name) return;
+    
+    // Vérifier qu'il y a soit un avatar soit une photo
+    if (selectedAvatarIndex === null && !customPhotoUri) return;
 
     const newParticipant: Participant = {
       id: Date.now().toString(),
       name,
-      avatarIndex: selectedAvatarIndex,
+      avatarIndex: selectedAvatarIndex ?? 0,
+      customPhotoUri: customPhotoUri || undefined,
     };
 
     setParticipants([...participants, newParticipant]);
     setNewParticipantName('');
     setSelectedAvatarIndex(null);
+    setCustomPhotoUri(null);
   };
 
-  const handleEditParticipant = (id: string, newName: string) => {
+  const handleEditParticipant = (id: string, newName: string, avatarIndex: number, newCustomPhotoUri?: string) => {
     setParticipants(prev =>
-      prev.map(p => (p.id === id ? { ...p, name: newName } : p))
+      prev.map(p => (p.id === id ? { 
+        ...p, 
+        name: newName,
+        avatarIndex,
+        customPhotoUri: newCustomPhotoUri,
+      } : p))
     );
   };
 
@@ -75,12 +87,9 @@ export default function App() {
   };
 
   const handleCreateSession = () => {
-    const success = createSession();
-    if (success) {
       setCurrentScreen('results');
       // Lancer le tirage après un court délai pour permettre l'affichage de l'écran
       setTimeout(runDraw, 200);
-    }
   };
 
   const handleResetSession = () => {
@@ -92,6 +101,7 @@ export default function App() {
     setParticipants([]);
     setNewParticipantName('');
     setSelectedAvatarIndex(null);
+    setCustomPhotoUri(null);
     setBudget('25');
     resetSession();
     setCurrentScreen('home');
@@ -107,6 +117,8 @@ export default function App() {
           setNewParticipantName={setNewParticipantName}
           selectedAvatarIndex={selectedAvatarIndex}
           setSelectedAvatarIndex={setSelectedAvatarIndex}
+          customPhotoUri={customPhotoUri}
+          setCustomPhotoUri={setCustomPhotoUri}
           budget={budget}
           setBudget={setBudget}
           bounceAnim={bounceAnim}
@@ -120,7 +132,6 @@ export default function App() {
       ) : (
         <ResultsScreen
           assignments={assignments}
-          sessionCode={sessionCode}
           budget={budget}
           isDrawing={isDrawing}
           showConfetti={showConfetti}

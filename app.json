@@ -1,27 +1,31 @@
 {
   "expo": {
-    "name": "gift-giver-fixed",
+    "name": "Gift Giver - Tirage Noël",
     "slug": "gift-giver-fixed",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.giftgiver.noel",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Cette application utilise la caméra pour vous permettre de prendre une photo de profil personnalisée.",
+        "NSPhotoLibraryUsageDescription": "Cette application accède à votre galerie pour vous permettre de choisir une photo de profil personnalisée."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#B30000"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.giftgiver.noel",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "VIBRATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,6 +40,28 @@
     },
     "updates": {
       "url": "https://u.expo.dev/d61480c8-f137-42b0-828b-469d149fbcd3"
-    }
+    },
+    "plugins": [
+      "expo-audio",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Cette application accède à vos photos pour personnaliser votre avatar.",
+          "cameraPermission": "Cette application utilise la caméra pour prendre une photo de profil."
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#B30000"
+        }
+      ],
+      "expo-asset",
+      "expo-sharing",
+      "expo-status-bar"
+    ]
   }
 }

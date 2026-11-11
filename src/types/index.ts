@@ -2,6 +2,7 @@ export interface Participant {
   id: string;
   name: string;
   avatarIndex: number;
+  customPhotoUri?: string;
 }
 
 export interface Assignment {
@@ -13,6 +14,8 @@ export interface EditModal {
   visible: boolean;
   id?: string;
   name?: string;
+  avatarIndex?: number;
+  customPhotoUri?: string;
 }
 
 export type ScreenType = 'home' | 'results';
@@ -20,7 +23,6 @@ export type ScreenType = 'home' | 'results';
 export interface AppState {
   participants: Participant[];
   assignments: Assignment[];
-  sessionCode: string;
   budget: string;
   currentScreen: ScreenType;
   isDrawing: boolean;

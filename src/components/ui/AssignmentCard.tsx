@@ -9,12 +9,24 @@ interface AssignmentCardProps {
 }
 
 export function AssignmentCard({ assignment, opacity }: AssignmentCardProps) {
+  // Déterminer la source de l'avatar (photo custom ou avatar prédéfini)
+  const giverAvatarSource = assignment.giver.customPhotoUri 
+    ? { uri: assignment.giver.customPhotoUri }
+    : AVATAR_LIST[assignment.giver.avatarIndex];
+    
+  const receiverAvatarSource = assignment.receiver.customPhotoUri 
+    ? { uri: assignment.receiver.customPhotoUri }
+    : AVATAR_LIST[assignment.receiver.avatarIndex];
+
   return (
     <Animated.View style={[styles.assignmentItem, { opacity }]}>
       <View style={styles.participantInfo}>
         <Image 
-          source={AVATAR_LIST[assignment.giver.avatarIndex]} 
-          style={styles.avatarImage} 
+          source={giverAvatarSource} 
+          style={[
+            styles.avatarImage,
+            assignment.giver.customPhotoUri && styles.customPhotoStyle
+          ]} 
         />
         <Text style={styles.participantName}>{assignment.giver.name}</Text>
       </View>
@@ -23,8 +35,11 @@ export function AssignmentCard({ assignment, opacity }: AssignmentCardProps) {
       
       <View style={styles.participantInfo}>
         <Image 
-          source={AVATAR_LIST[assignment.receiver.avatarIndex]} 
-          style={styles.avatarImage} 
+          source={receiverAvatarSource} 
+          style={[
+            styles.avatarImage,
+            assignment.receiver.customPhotoUri && styles.customPhotoStyle
+          ]} 
         />
         <Text style={styles.participantName}>{assignment.receiver.name}</Text>
       </View>
@@ -51,6 +66,10 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginBottom: 5,
+  },
+  customPhotoStyle: {
+    borderWidth: 2,
+    borderColor: '#4CAF50',
   },
   participantName: {
     fontSize: 14,

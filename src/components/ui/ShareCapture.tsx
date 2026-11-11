@@ -1,14 +1,13 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, Modal, StyleSheet, Dimensions, Alert } from 'react-native';
+import { View, Text, Modal, StyleSheet, Dimensions, Alert, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { captureRef } from 'react-native-view-shot';
 import * as Sharing from 'expo-sharing';
 import { Assignment } from '../../types';
-import { COLORS } from '../../constants';
+import { COLORS, AVATAR_LIST } from '../../constants';
 
 interface ShareCaptureProps {
   assignments: Assignment[];
-  sessionCode: string;
   budget: string;
   isVisible: boolean;
   onClose: () => void;
@@ -18,7 +17,6 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export function ShareCapture({ 
   assignments, 
-  sessionCode, 
   budget, 
   isVisible, 
   onClose 
@@ -72,7 +70,6 @@ export function ShareCapture({
         <View ref={captureRef_internal} style={styles.captureView}>
           {/* Header */}
           <Text style={styles.title}>🎅 Résultats du Tirage 🎄</Text>
-          <Text style={styles.info}>Session: {sessionCode}</Text>
           <Text style={styles.info}>Budget: {budget}€ par personne</Text>
           
           {/* Ligne séparatrice */}
@@ -83,9 +80,27 @@ export function ShareCapture({
           
           {assignments.map((assignment, index) => (
             <View key={index} style={styles.resultRow}>
-              <Text style={styles.giver}>{assignment.giver.name}</Text>
-              <Text style={styles.arrow}>🎁→🎁</Text>
-              <Text style={styles.receiver}>{assignment.receiver.name}</Text>
+              {/* Giver avec avatar */}
+              <View style={styles.participantContainer}>
+                {assignment.giver.customPhotoUri ? (
+                  <Image source={{ uri: assignment.giver.customPhotoUri }} style={styles.avatar} />
+                ) : (
+                  <Image source={AVATAR_LIST[assignment.giver.avatarIndex]} style={styles.avatar} />
+                )}
+                <Text style={styles.giver} numberOfLines={1}>{assignment.giver.name}</Text>
+              </View>
+              
+              <Text style={styles.arrow}>→</Text>
+              
+              {/* Receiver avec avatar */}
+              <View style={styles.participantContainer}>
+                {assignment.receiver.customPhotoUri ? (
+                  <Image source={{ uri: assignment.receiver.customPhotoUri }} style={styles.avatar} />
+                ) : (
+                  <Image source={AVATAR_LIST[assignment.receiver.avatarIndex]} style={styles.avatar} />
+                )}
+                <Text style={styles.receiver} numberOfLines={1}>{assignment.receiver.name}</Text>
+              </View>
             </View>
           ))}
           
@@ -175,7 +190,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#f8f9fa',
-    padding: 12,
+    padding: 10,
     marginBottom: 8,
     borderRadius: 10,
     borderLeftWidth: 4,
@@ -186,21 +201,35 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
+  participantContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 35,
+    height: 35,
+    borderRadius: 17.5,
+    marginRight: 8,
+    borderWidth: 2,
+    borderColor: '#e74c3c',
+  },
   giver: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#2c3e50',
     textAlign: 'left',
   },
   arrow: {
-    fontSize: 18,
-    marginHorizontal: 10,
+    fontSize: 20,
+    marginHorizontal: 8,
     color: '#e74c3c',
+    fontWeight: 'bold',
   },
   receiver: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#27ae60',
     textAlign: 'right',

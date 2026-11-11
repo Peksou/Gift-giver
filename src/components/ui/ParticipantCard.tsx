@@ -5,21 +5,34 @@ import { AVATAR_LIST } from '../../constants';
 
 interface ParticipantCardProps {
   participant: Participant;
-  onEdit: (id: string, name: string) => void;
+  onEdit: (id: string, name: string, avatarIndex: number, customPhotoUri?: string) => void;
   onDelete: (id: string) => void;
 }
 
 export function ParticipantCard({ participant, onEdit, onDelete }: ParticipantCardProps) {
+  // Déterminer la source de l'avatar (photo custom ou avatar prédéfini)
+  const avatarSource = participant.customPhotoUri 
+    ? { uri: participant.customPhotoUri }
+    : AVATAR_LIST[participant.avatarIndex];
+
   return (
     <View style={styles.participantItem}>
       <Image 
-        source={AVATAR_LIST[participant.avatarIndex]} 
-        style={styles.avatarImageSmall} 
+        source={avatarSource} 
+        style={[
+          styles.avatarImageSmall,
+          participant.customPhotoUri && styles.customPhotoStyle
+        ]} 
       />
       <Text style={styles.participantName}>{participant.name}</Text>
       <View style={styles.actionsContainer}>
         <TouchableOpacity 
-          onPress={() => onEdit(participant.id, participant.name)} 
+          onPress={() => onEdit(
+            participant.id, 
+            participant.name, 
+            participant.avatarIndex,
+            participant.customPhotoUri
+          )} 
           style={styles.iconBtn}
         >
           <Text>✏️</Text>
@@ -49,6 +62,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+  customPhotoStyle: {
+    borderWidth: 2,
+    borderColor: '#4CAF50',
   },
   participantName: {
     fontSize: 16,

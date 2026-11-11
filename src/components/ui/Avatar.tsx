@@ -2,12 +2,13 @@ import React from 'react';
 import { TouchableOpacity, Animated, Image, StyleSheet } from 'react-native';
 
 interface AvatarProps {
-  source: any;
+  source?: any;
   index: number;
   isSelected: boolean;
   bounceAnim: Animated.Value;
   onSelect: (index: number) => void;
   size?: 'small' | 'medium' | 'large';
+  customPhotoUri?: string;
 }
 
 const SIZES = {
@@ -22,9 +23,15 @@ export function Avatar({
   isSelected, 
   bounceAnim, 
   onSelect, 
-  size = 'medium' 
+  size = 'medium',
+  customPhotoUri,
 }: AvatarProps) {
   const sizeConfig = SIZES[size];
+
+  // Déterminer la source de l'image
+  const imageSource = customPhotoUri 
+    ? { uri: customPhotoUri } 
+    : source;
 
   return (
     <TouchableOpacity onPress={() => onSelect(index)}>
@@ -41,7 +48,7 @@ export function Avatar({
         ]}
       >
         <Image 
-          source={source} 
+          source={imageSource} 
           style={[
             styles.avatarImage,
             {

@@ -4,3 +4,4 @@ export { ParticipantCard } from './ParticipantCard';
 export { AssignmentCard } from './AssignmentCard';
 export { EditModal } from './EditModal';
 export { ShareCapture } from './ShareCapture';
+export { PhotoPicker } from './PhotoPicker';

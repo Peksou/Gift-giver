@@ -10,7 +10,6 @@ import { COLORS, SCREEN_WIDTH, SNOWFALL_CONFIG, CONFETTI_CONFIG } from '../../co
 
 interface ResultsScreenProps {
   assignments: Assignment[];
-  sessionCode: string;
   budget: string;
   isDrawing: boolean;
   showConfetti: boolean;
@@ -22,7 +21,6 @@ interface ResultsScreenProps {
 
 export function ResultsScreen({
   assignments,
-  sessionCode,
   budget,
   isDrawing,
   showConfetti,
@@ -46,9 +44,7 @@ export function ResultsScreen({
           <View style={{ flex: 1 }}>
             <View style={globalStyles.header}>
               <Text style={globalStyles.title}>🎅 Résultats du Tirage 🎄</Text>
-              <Text style={globalStyles.subtitle}>
-                Session: <Text style={globalStyles.bold}>{sessionCode}</Text>
-              </Text>
+
               <Text style={globalStyles.subtitle}>
                 Budget par personne: <Text style={globalStyles.bold}>{budget}€</Text>
               </Text>
@@ -121,7 +117,6 @@ export function ResultsScreen({
         {/* Composant de partage */}
         <ShareCapture
           assignments={assignments}
-          sessionCode={sessionCode}
           budget={budget}
           isVisible={showShareModal}
           onClose={() => setShowShareModal(false)}
